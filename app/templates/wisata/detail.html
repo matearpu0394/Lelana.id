@@ -3,78 +3,119 @@
 {% block title %}{{ wisata.nama }} - Lelana.id{% endblock %}
 
 {% block content %}
-<style>
-    .detail-container { border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-    .detail-image { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; }
-    .review-section { margin-top: 30px; }
-    .review-item { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
-    .review-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-    .review-form { border: 1px solid #ddd; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-    .error { color: red; font-size: 0.9em; }
-</style>
+<div class="max-w-5xl mx-auto py-10 animate-[fadeInUp_0.3s_ease-out]">
 
-<div class="detail-container">
-    <h2>{{ wisata.nama }}</h2>
-    
+  <!-- Detail Wisata -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-10">
+    <h2 class="text-3xl font-bold text-gray-800 mb-4">{{ wisata.nama }}</h2>
+
     {% if wisata.gambar_url %}
-    <img src="{{ wisata.gambar_url }}" alt="Gambar {{ wisata.nama }}" class="detail-image" onerror="this.style.display='none'">
+    <img src="{{ wisata.gambar_url }}" alt="Gambar {{ wisata.nama }}"
+         class="w-full rounded-lg mb-6 max-h-[400px] object-cover"
+         onerror="this.style.display='none'">
     {% endif %}
 
-    <p><strong>Kategori:</strong> {{ wisata.kategori }}</p>
-    <p><strong>Lokasi:</strong> {{ wisata.lokasi }}</p>
-    <hr>
-    <p>{{ wisata.deskripsi|safe }}</p>
-    <hr>
-    <small>Data dibuat pada: {{ wisata.tanggal_dibuat.strftime('%d %B %Y') }}</small>
-</div>
+    <div class="text-gray-700 space-y-2 mb-6">
+      <p><strong>Kategori:</strong> {{ wisata.kategori }}</p>
+      <p><strong>Lokasi:</strong> {{ wisata.lokasi }}</p>
+    </div>
 
-<div class="review-section">
-    <h3>Ulasan Petualang</h3>
+    <hr class="my-4">
+
+    <div class="prose max-w-none text-gray-700 leading-relaxed">
+      {{ wisata.deskripsi|safe }}
+    </div>
+
+    <hr class="my-6">
+    <small class="text-gray-500 italic">
+      🕓 Data dibuat pada {{ wisata.tanggal_dibuat.strftime('%d %B %Y') }}
+    </small>
+  </div>
+
+  <!-- Ulasan Section -->
+  <div class="review-section">
+    <h3 class="text-2xl font-semibold text-gray-800 mb-4">⭐ Ulasan Petualang</h3>
 
     {% if current_user.is_authenticated %}
-    <form method="POST" novalidate enctype="multipart/form-data" class="review-form">
-        {{ form.hidden_tag() }}
-        <h4>Tulis Ulasan Anda</h4>
-        <div>
-            {{ form.rating.label }}<br>
-            {{ form.rating(type='number', min='1', max='5') }}
-            {% for error in form.rating.errors %}<span class="error">{{ error }}</span>{% endfor %}
-        </div>
-        <div style="margin-top: 10px;">
-            {{ form.komentar.label }}<br>
-            {{ form.komentar(rows=4, style="width: 100%;") }}
-            {% for error in form.komentar.errors %}<span class="error">{{ error }}</span>{% endfor %}
-        </div>
-        <div style="margin-top: 10px;">
-            {{ form.foto.label }}<br>
-            {{ form.foto() }}
-            {% for error in form.foto.errors %}<span class="error">{{ error }}</span>{% endfor %}
-        </div>
-        <div style="margin-top: 10px;">
-            {{ form.submit() }}
-        </div>
+    <form method="POST" novalidate enctype="multipart/form-data"
+          class="bg-white border border-gray-100 shadow-sm rounded-xl p-6 mb-10">
+      {{ form.hidden_tag() }}
+
+      <h4 class="text-lg font-semibold text-gray-800 mb-4">Tulis Ulasan Anda</h4>
+
+      <!-- Rating -->
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-1">{{ form.rating.label }}</label>
+        {{ form.rating(type='number', min='1', max='5', class_='w-20 border-gray-300 rounded-md p-2 focus:ring-primary focus:border-primary') }}
+        {% for error in form.rating.errors %}
+          <p class="text-red-500 text-sm">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <!-- Komentar -->
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-1">{{ form.komentar.label }}</label>
+        {{ form.komentar(rows=4, class_='w-full border-gray-300 rounded-md p-2 focus:ring-primary focus:border-primary') }}
+        {% for error in form.komentar.errors %}
+          <p class="text-red-500 text-sm">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <!-- Foto Upload -->
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-1">{{ form.foto.label }}</label>
+        {{ form.foto(class_='block w-full text-sm text-gray-600 border border-gray-300 rounded-md cursor-pointer focus:ring-primary focus:border-primary') }}
+        {% for error in form.foto.errors %}
+          <p class="text-red-500 text-sm">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <!-- Submit -->
+      <div>
+        {{ form.submit(class_='bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md font-medium transition') }}
+      </div>
     </form>
+
     {% else %}
-    <p><a href="{{ url_for('auth.login') }}">Login</a> untuk menulis ulasan.</p>
+    <p class="text-gray-600">
+      <a href="{{ url_for('auth.login') }}" class="text-primary font-medium hover:underline">
+        Login
+      </a> untuk menulis ulasan.
+    </p>
     {% endif %}
 
-    {% for review in reviews %}
-    <div class="review-item">
-        <p><strong>{{ review.author.username }}</strong> - Rating: {{ review.rating }}/5</p>
-        <p>{{ review.komentar }}</p>
+    <!-- Daftar Review -->
+    <div class="space-y-6 mt-8">
+      {% for review in reviews %}
+      <div class="bg-white border border-gray-100 rounded-lg p-5 shadow-sm hover:shadow-md transition">
+        <p class="text-gray-800 font-semibold">{{ review.author.username }}</p>
+        <p class="text-yellow-500 text-sm mb-2">Rating: {{ review.rating }}/5</p>
+        <p class="text-gray-700 mb-3">{{ review.komentar }}</p>
 
-        <div class="review-gallery">
-            {% for foto in review.foto %}
-            <img src="{{ url_for('static', filename='uploads/' + foto.nama_file) }}" alt="Foto ulasan dari {{ review.author.username }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
-            {% endfor %}
+        {% if review.foto %}
+        <div class="flex flex-wrap gap-3">
+          {% for foto in review.foto %}
+          <img src="{{ url_for('static', filename='uploads/' + foto.nama_file) }}"
+               alt="Foto ulasan dari {{ review.author.username }}"
+               class="w-24 h-24 object-cover rounded-md border border-gray-200">
+          {% endfor %}
         </div>
-        
-        <small>Ditulis pada: {{ review.tanggal_dibuat.strftime('%d %B %Y') }}</small>
-    </div>
-    {% else %}
-    <p>Belum ada ulasan untuk destinasi ini.</p>
-    {% endfor %}
-</div>
+        {% endif %}
 
-<p><a href="{{ url_for('wisata.list_wisata') }}">&laquo; Kembali ke Daftar Wisata</a></p>
+        <small class="text-gray-400 italic block mt-2">
+          🕓 Ditulis pada {{ review.tanggal_dibuat.strftime('%d %B %Y') }}
+        </small>
+      </div>
+      {% else %}
+      <p class="text-gray-500 italic">Belum ada ulasan untuk destinasi ini.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <a href="{{ url_for('wisata.list_wisata') }}"
+       class="text-primary hover:underline font-medium">&laquo; Kembali ke Daftar Wisata</a>
+  </div>
+
+</div>
 {% endblock %}

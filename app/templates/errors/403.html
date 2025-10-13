@@ -3,9 +3,18 @@
 {% block title %}Akses Ditolak{% endblock %}
 
 {% block content %}
-    <div style="text-align: center; padding: 40px;">
-        <h1>Akses Ditolak (Error 403)</h1>
-        <p>Maaf, Anda tidak memiliki izin untuk mengakses halaman ini.</p>
-        <p><a href="{{ url_for('main.index') }}">Kembali ke Halaman Utama</a></p>
+    <div class="text-center py-16 px-6">
+        <h1 class="text-4xl font-bold text-[#13B782] mb-4">
+            Akses Ditolak (Error 403)
+        </h1>
+        <p class="text-gray-600 mb-6">
+            Maaf, Anda tidak memiliki izin untuk mengakses halaman ini.
+        </p>
+        <p>
+            <a href="{{ url_for('main.index') }}"
+               class="inline-block bg-[#13B782] hover:bg-[#0FA774] text-white px-5 py-2 rounded-md transition">
+                Kembali ke Halaman Utama
+            </a>
+        </p>
     </div>
 {% endblock %}

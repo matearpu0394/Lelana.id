@@ -81,6 +81,10 @@ def peta_wisata():
         Response: Render template peta wisata.
     """
     return render_template('main/peta.html')
+<<<<<<< HEAD
+=======
+    
+>>>>>>> d9bd236 (style: add tailwind css classes in html template files)
 
 @main.route('/about')
 def about():

@@ -3,34 +3,52 @@
 {% block title %}{{ paket.nama }} - Lelana.id{% endblock %}
 
 {% block content %}
-<style>
-    .detail-container { border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-    .destinasi-list { list-style: square; padding-left: 20px; }
-</style>
+<div class="max-w-3xl mx-auto py-10 animate-[fadeInUp_0.3s_ease-out]">
 
-<div class="detail-container">
-    <h2>{{ paket.nama }}</h2>
-    <p><strong>Harga:</strong> Rp {{ "{:,.0f}".format(paket.harga).replace(",", ".") }}</p>
-    
-    <hr>
-    <h4>Deskripsi Paket</h4>
-    <p>{{ paket.deskripsi|safe }}</p>
-    
-    <hr>
-    <h4>Destinasi yang Termasuk:</h4>
-    {% if paket.destinasi %}
-    <ul class="destinasi-list">
-        {% for destinasi in paket.destinasi %}
-        <li><a href="{{ url_for('wisata.detail_wisata', id=destinasi.id) }}">{{ destinasi.nama }}</a></li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>Tidak ada destinasi spesifik yang terdaftar.</p>
-    {% endif %}
-    
-    <hr>
-    <small>Data dibuat pada: {{ paket.tanggal_dibuat.strftime('%d %B %Y') }}</small>
+  <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-8">
+      <h2 class="text-3xl font-bold text-gray-800 mb-3">{{ paket.nama }}</h2>
+      <p class="text-lg text-gray-700 mb-4">
+          <strong>Harga:</strong>
+          <span class="text-primary font-semibold">
+              Rp {{ "{:,.0f}".format(paket.harga).replace(",", ".") }}
+          </span>
+      </p>
+
+      <hr class="my-6 border-gray-200">
+
+      <h4 class="text-xl font-semibold text-gray-800 mb-2">Deskripsi Paket</h4>
+      <p class="text-gray-700 leading-relaxed mb-6">{{ paket.deskripsi|safe }}</p>
+
+      <hr class="my-6 border-gray-200">
+
+      <h4 class="text-xl font-semibold text-gray-800 mb-3">Destinasi yang Termasuk</h4>
+      {% if paket.destinasi %}
+      <ul class="list-disc pl-6 space-y-1 text-gray-700">
+          {% for destinasi in paket.destinasi %}
+          <li>
+              <a href="{{ url_for('wisata.detail_wisata', id=destinasi.id) }}"
+                 class="text-primary hover:underline hover:text-primary/80 transition">
+                 {{ destinasi.nama }}
+              </a>
+          </li>
+          {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-gray-500 italic">Tidak ada destinasi spesifik yang terdaftar.</p>
+      {% endif %}
+
+      <hr class="my-6 border-gray-200">
+
+      <small class="text-gray-500">
+          Data dibuat pada: {{ paket.tanggal_dibuat.strftime('%d %B %Y') }}
+      </small>
+  </div>
+
+  <div class="mt-8">
+      <a href="{{ url_for('paket_wisata.list_paket') }}"
+         class="inline-flex items-center text-primary hover:text-primary/80 font-medium transition">
+          &laquo; Kembali ke Daftar Paket
+      </a>
+  </div>
 </div>
-
-<p><a href="{{ url_for('paket_wisata.list_paket') }}">&laquo; Kembali ke Daftar Paket</a></p>
 {% endblock %}

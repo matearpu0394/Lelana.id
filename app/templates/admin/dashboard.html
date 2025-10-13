@@ -4,7 +4,79 @@
 {% block page_title %}Selamat Datang, {{ current_user.username }}!{% endblock %}
 
 {% block content %}
-<p>Ini adalah pusat kendali untuk situs Lelana.id.</p>
-<p>Dari sini, Anda dapat mengelola pengguna, konten wisata, event, dan semua aspek lain dari platform.</p>
-<p>Silakan gunakan navigasi di atas untuk memulai.</p>
+<!-- Hero Section -->
+<section class="bg-white rounded-xl shadow-sm p-6 mb-8 flex items-center justify-between">
+  <div>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-1">
+      👋 Halo, {{ current_user.username }}!
+    </h2>
+    <p class="text-gray-600">
+      Ini adalah pusat kendali untuk situs <span class="text-primary font-medium">Lelana.id</span>.
+    </p>
+  </div>
+  <div class="hidden sm:block">
+    <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24"
+           stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M5.121 17.804A11.955 11.955 0 0112 15c2.485 0 4.779.755 6.879 2.049M12 12a5 5 0 100-10 5 5 0 000 10z" />
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Statistik Card -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+  <div class="bg-white rounded-xl shadow-soft p-5 border border-gray-100 hover:shadow-md transition duration-200">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Total Pengguna</p>
+        <h3 class="text-2xl font-semibold text-gray-800 mt-1">{{ total_users or 0 }}</h3>
+      </div>
+      <div class="text-primary text-3xl">👥</div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-soft p-5 border border-gray-100 hover:shadow-md transition duration-200">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Jumlah Wisata</p>
+        <h3 class="text-2xl font-semibold text-gray-800 mt-1">{{ total_wisata or 0 }}</h3>
+      </div>
+      <div class="text-yellow-500 text-3xl">🌄</div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-soft p-5 border border-gray-100 hover:shadow-md transition duration-200">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Event Terdaftar</p>
+        <h3 class="text-2xl font-semibold text-gray-800 mt-1">{{ total_event or 0 }}</h3>
+      </div>
+      <div class="text-blue-500 text-3xl">🎟️</div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-soft p-5 border border-gray-100 hover:shadow-md transition duration-200">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Paket Wisata</p>
+        <h3 class="text-2xl font-semibold text-gray-800 mt-1">{{ total_paket or 0 }}</h3>
+      </div>
+      <div class="text-green-500 text-3xl">🧭</div>
+    </div>
+  </div>
+</section>
+
+<!-- Info Section -->
+<section class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 animate-fadeInUp">
+  <h3 class="text-lg font-semibold text-gray-800 mb-3">Panduan Pengelolaan</h3>
+  <p class="text-gray-600 leading-relaxed mb-4">
+    Dari sini, Anda dapat mengelola pengguna, konten wisata, event, dan semua aspek lain dari platform.
+    Gunakan menu navigasi di kiri untuk mulai bekerja.
+  </p>
+  <p class="text-sm text-gray-500 italic">
+    💡 Tip: Pastikan Anda memverifikasi data sebelum publikasi agar konten tetap akurat dan menarik.
+  </p>
+</section>
 {% endblock %}

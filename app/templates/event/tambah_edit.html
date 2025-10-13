@@ -3,63 +3,61 @@
 {% block title %}{{ judul_halaman }} - Lelana.id{% endblock %}
 
 {% block content %}
-<style>
-    .form-container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 5px; }
-    .form-group input, .form-group textarea { width: 100%; padding: 8px; box-sizing: border-box; }
-    .form-submit { padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .error-message { color: red; font-size: 0.9em; }
-</style>
+<div class="max-w-2xl mx-auto mt-10 bg-white border border-gray-200 rounded-xl shadow-sm p-8">
+  <h2 class="text-3xl font-semibold text-gray-800 mb-6">{{ judul_halaman }}</h2>
 
-<div class="form-container">
-    <h2>{{ judul_halaman }}</h2>
-    <form method="POST" novalidate>
-        {{ form.hidden_tag() }}
-        
-        <div class="form-group">
-            {{ form.nama.label }}
-            {{ form.nama() }}
-            {% for error in form.nama.errors %}
-                <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </div>
+  <form method="POST" novalidate class="space-y-6">
+    {{ form.hidden_tag() }}
 
-        <div class="form-group">
-            {{ form.tanggal.label }}
-            {{ form.tanggal() }}
-            {% for error in form.tanggal.errors %}
-                <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </div>
+    <!-- Nama Event -->
+    <div>
+      {{ form.nama.label(class="block text-gray-700 font-medium mb-2") }}
+      {{ form.nama(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#13B782]") }}
+      {% for error in form.nama.errors %}
+      <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
 
-        <div class="form-group">
-            {{ form.lokasi.label }}
-            {{ form.lokasi() }}
-            {% for error in form.lokasi.errors %}
-                <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </div>
+    <!-- Tanggal -->
+    <div>
+      {{ form.tanggal.label(class="block text-gray-700 font-medium mb-2") }}
+      {{ form.tanggal(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#13B782]") }}
+      {% for error in form.tanggal.errors %}
+      <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
 
-        <div class="form-group">
-            {{ form.deskripsi.label }}
-            {{ form.deskripsi(rows=5) }}
-            {% for error in form.deskripsi.errors %}
-                <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </div>
+    <!-- Lokasi -->
+    <div>
+      {{ form.lokasi.label(class="block text-gray-700 font-medium mb-2") }}
+      {{ form.lokasi(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#13B782]") }}
+      {% for error in form.lokasi.errors %}
+      <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
 
-        <div class="form-group">
-            {{ form.penyelenggara.label }}
-            {{ form.penyelenggara() }}
-            {% for error in form.penyelenggara.errors %}
-                <span class="error-message">{{ error }}</span>
-            {% endfor %}
-        </div>
+    <!-- Deskripsi -->
+    <div>
+      {{ form.deskripsi.label(class="block text-gray-700 font-medium mb-2") }}
+      {{ form.deskripsi(rows=5, class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#13B782]") }}
+      {% for error in form.deskripsi.errors %}
+      <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
 
-        <div class="form-group">
-            {{ form.submit(class="form-submit") }}
-        </div>
-    </form>
+    <!-- Penyelenggara -->
+    <div>
+      {{ form.penyelenggara.label(class="block text-gray-700 font-medium mb-2") }}
+      {{ form.penyelenggara(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#13B782]") }}
+      {% for error in form.penyelenggara.errors %}
+      <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+
+    <!-- Submit -->
+    <div class="pt-4">
+      {{ form.submit(class="w-full bg-[#13B782] hover:bg-[#10a072] text-white font-medium py-2 px-4 rounded-lg shadow-sm transition") }}
+    </div>
+  </form>
 </div>
 {% endblock %}

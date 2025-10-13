@@ -3,56 +3,56 @@
 {% block title %}{{ itinerari.judul }}{% endblock %}
 
 {% block content %}
-<style>
-    .detail-container { border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
-    .author-info { font-size: 1.1em; color: #333; }
-    .wisata-list { list-style-type: none; padding-left: 0; }
-    .wisata-list li { background-color: #f8f9fa; border: 1px solid #dee2e6; margin-bottom: 10px; padding: 15px; border-radius: 5px; }
-    .wisata-list li a { text-decoration: none; font-weight: bold; color: #0056b3; }
-</style>
+<div class="max-w-3xl mx-auto bg-white border border-gray-100 rounded-2xl shadow-sm p-8 mt-8 animate-[fadeInUp_0.3s_ease-out]">
+  <h2 class="text-3xl font-semibold text-gray-800 mb-2">{{ itinerari.judul }}</h2>
 
-<div class="detail-container">
-    <h2>{{ itinerari.judul }}</h2>
-    <p class="author-info">
-        Sebuah petualangan yang dibagikan oleh <strong>{{ itinerari.penulis.username }}</strong>
-    </p>
-    <small>Dibuat pada: {{ itinerari.tanggal_dibuat.strftime('%d %B %Y') }}</small>
-    
-    {% if itinerari.deskripsi %}
-        <hr>
-        <h4>Cerita Petualangan:</h4>
-        <p>{{ itinerari.deskripsi|safe }}</p>
-    {% endif %}
+  <p class="text-gray-600 mb-1">
+    Sebuah petualangan yang dibagikan oleh
+    <strong class="text-gray-800">{{ itinerari.penulis.username }}</strong>
+  </p>
+  <p class="text-sm text-gray-500 mb-6">Dibuat pada: {{ itinerari.tanggal_dibuat.strftime('%d %B %Y') }}</p>
 
-    <hr>
-    <h4>Rute Perjalanan:</h4>
+  {% if itinerari.deskripsi %}
+  <div class="border-t border-gray-100 pt-5">
+    <h4 class="text-lg font-medium text-gray-800 mb-2">Cerita Petualangan</h4>
+    <p class="text-gray-700 leading-relaxed">{{ itinerari.deskripsi|safe }}</p>
+  </div>
+  {% endif %}
+
+  <div class="border-t border-gray-100 mt-6 pt-5">
+    <h4 class="text-lg font-medium text-gray-800 mb-3">Rute Perjalanan</h4>
     {% if itinerari.wisata_termasuk %}
-        <ul class="wisata-list">
-            {% for wisata in itinerari.wisata_termasuk %}
-                <li>
-                    <a href="{{ url_for('wisata.detail_wisata', id=wisata.id) }}">{{ wisata.nama }}</a>
-                    <br>
-                    <small>Lokasi: {{ wisata.lokasi }}</small>
-                </li>
-            {% endfor %}
-        </ul>
+    <ul class="space-y-3">
+      {% for wisata in itinerari.wisata_termasuk %}
+      <li class="bg-gray-50 border border-gray-200 p-4 rounded-lg hover:shadow-sm transition">
+        <a href="{{ url_for('wisata.detail_wisata', id=wisata.id) }}" class="text-primary font-semibold hover:underline">
+          {{ wisata.nama }}
+        </a>
+        <p class="text-sm text-gray-600 mt-1">Lokasi: {{ wisata.lokasi }}</p>
+      </li>
+      {% endfor %}
+    </ul>
     {% else %}
-        <p>Tidak ada tempat wisata yang ditambahkan ke itinerari ini.</p>
+    <p class="text-gray-600">Tidak ada tempat wisata yang ditambahkan ke itinerari ini.</p>
     {% endif %}
-</div>
+  </div>
 
-<!-- Tombol Edit dan Hapus hanya untuk penulis -->
-{% if current_user.is_authenticated and current_user.id == itinerari.penulis.id %}
-<div style="margin-top: 20px;">
-    <a href="{{ url_for('itinerari.edit_itinerari', id=itinerari.id) }}" style="text-decoration: none; padding: 8px 12px; background-color: #ffc107; color: black; border-radius: 5px;">Edit Itinerari</a>
-    <form action="{{ url_for('itinerari.hapus_itinerari', id=itinerari.id) }}" method="POST" style="display:inline; margin-left: 10px;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus itinerari ini?');">
-        {{ delete_form.hidden_tag() }}
-        <button type="submit" style="padding: 8px 12px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">Hapus Itinerari</button>
+  {% if current_user.is_authenticated and current_user.id == itinerari.penulis.id %}
+  <div class="mt-8 flex items-center space-x-3">
+    <a href="{{ url_for('itinerari.edit_itinerari', id=itinerari.id) }}" class="inline-block px-4 py-2 bg-yellow-400 text-gray-800 rounded-md hover:bg-yellow-500 transition">
+      Edit Itinerari
+    </a>
+    <form action="{{ url_for('itinerari.hapus_itinerari', id=itinerari.id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus itinerari ini?');">
+      {{ delete_form.hidden_tag() }}
+      <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
+        Hapus Itinerari
+      </button>
     </form>
-</div>
-{% endif %}
+  </div>
+  {% endif %}
 
-<p style="margin-top: 20px;">
-    <a href="{{ url_for('itinerari.list_itinerari') }}">&laquo; Kembali ke Daftar Itinerari</a>
-</p>
+  <p class="mt-8">
+    <a href="{{ url_for('itinerari.list_itinerari') }}" class="text-primary hover:underline">&laquo; Kembali ke Daftar Itinerari</a>
+  </p>
+</div>
 {% endblock %}

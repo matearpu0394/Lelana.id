@@ -4,39 +4,51 @@
 {% block page_title %}Manajemen Pengguna{% endblock %}
 
 {% block content %}
-<table border="1" style="width:100%; border-collapse: collapse;">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Peran (Role)</th>
-            <th>Aksi</th>
-        </tr>
+<div class="overflow-x-auto bg-white rounded-xl shadow-sm animate-[fadeInUp_0.3s_ease-out]">
+  <table class="w-full border-collapse">
+    <thead class="bg-gray-100 border-b border-gray-200 text-sm text-gray-600 uppercase">
+      <tr>
+        <th class="py-3 px-4 text-left">ID</th>
+        <th class="py-3 px-4 text-left">Username</th>
+        <th class="py-3 px-4 text-left">Email</th>
+        <th class="py-3 px-4 text-left">Peran (Role)</th>
+        <th class="py-3 px-4 text-center">Aksi</th>
+      </tr>
     </thead>
-    <tbody>
-        {% for user in users %}
-        <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.role }}</td>
-            <td>
-                <a href="{{ url_for('admin.edit_user', id=user.id) }}">Edit</a>
-                {% if user.id != current_user.id %}
-                |
-                <form action="{{ url_for('admin.hapus_user', id=user.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus pengguna ini?');">
-                    {{ delete_form.hidden_tag() }}
-                    <input type="submit" value="Hapus" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer;">
-                </form>
-                {% endif %}
-            </td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="5">Belum ada pengguna yang terdaftar.</td>
-        </tr>
-        {% endfor %}
+    <tbody class="divide-y divide-gray-100 text-sm text-gray-700">
+      {% for user in users %}
+      <tr class="hover:bg-gray-50 transition">
+        <td class="py-3 px-4">{{ user.id }}</td>
+        <td class="py-3 px-4 font-medium">{{ user.username }}</td>
+        <td class="py-3 px-4">{{ user.email }}</td>
+        <td class="py-3 px-4">{{ user.role }}</td>
+        <td class="py-3 px-4 text-center space-x-2">
+          <a href="{{ url_for('admin.edit_user', id=user.id) }}"
+             class="text-primary hover:text-primary/80 font-medium transition duration-150">
+            Edit
+          </a>
+          {% if user.id != current_user.id %}
+          |
+          <form action="{{ url_for('admin.hapus_user', id=user.id) }}" method="POST"
+                class="inline"
+                onsubmit="return confirm('Hapus pengguna ini?');">
+            {{ delete_form.hidden_tag() }}
+            <button type="submit"
+                    class="text-red-500 hover:text-red-600 font-medium transition duration-150">
+              Hapus
+            </button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" class="py-6 px-4 text-center text-gray-500 italic">
+          Belum ada pengguna yang terdaftar.
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
-</table>
+  </table>
+</div>
 {% endblock %}

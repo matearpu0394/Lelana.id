@@ -3,98 +3,118 @@
 {% block title %}Chat dengan Putri{% endblock %}
 
 {% block content %}
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+  <h2 class="text-3xl font-semibold text-gray-800 mb-2">Tanya Putri, Asisten Wisata Lelana.id!</h2>
+  <p class="text-gray-600 mb-6">
+    Punya pertanyaan seputar destinasi, kuliner, atau tips perjalanan? Tanyakan pada <strong>Putri</strong> di sini ✨
+  </p>
 
-<h2>Tanya Putri, Asisten Wisata Lelana.id!</h2>
-<p>Punya pertanyaan seputar destinasi, kuliner, atau tips perjalanan? Tanyakan pada Putri!</p>
-
-<div class="chat-container">
-    <div class="chat-history" id="chat-history">
-        <div class="chat-message bot-message">
-            <div class="message-bubble">
-                Hai! Aku Putri, asisten wisatamu. Ada yang bisa kubantu?
-            </div>
+  <div class="chat-container flex flex-col h-[70vh] border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+    <!-- Chat History -->
+    <div id="chat-history" class="chat-history flex-1 p-4 overflow-y-auto space-y-4">
+      <div class="chat-message bot-message">
+        <div class="message-bubble bg-[#13B782] text-white p-3 rounded-lg max-w-md">
+          Hai! Aku Putri, asisten wisatamu 🌸 Ada yang bisa kubantu?
         </div>
+      </div>
     </div>
-    <div class="chat-input">
-        <input type="text" id="user-input" placeholder="Ketik pertanyaanmu di sini..." autocomplete="off">
-        <button id="send-btn">Kirim</button>
+
+    <!-- Chat Input -->
+    <div class="chat-input flex items-center border-t border-gray-200 bg-white p-3">
+      <input id="user-input" type="text" placeholder="Ketik pertanyaanmu di sini..." 
+             class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#13B782] text-gray-800"
+             autocomplete="off">
+      <button id="send-btn" 
+              class="ml-3 bg-[#13B782] hover:bg-[#10a072] text-white font-medium px-4 py-2 rounded-lg shadow-sm transition">
+        Kirim
+      </button>
     </div>
+  </div>
 </div>
 
 <script>
-    const chatHistory = document.getElementById('chat-history');
-    const userInput = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
-    const csrfToken = '{{ csrf_token() }}';
+  const chatHistory = document.getElementById('chat-history');
+  const userInput = document.getElementById('user-input');
+  const sendBtn = document.getElementById('send-btn');
+  const csrfToken = '{{ csrf_token() }}';
 
-    function addMessage(sender, text) {
-        const messageContainer = document.createElement('div');
-        messageContainer.classList.add('chat-message', `${sender}-message`);
-        
-        const bubbleDiv = document.createElement('div');
-        bubbleDiv.classList.add('message-bubble');
+  function addMessage(sender, text) {
+      const messageContainer = document.createElement('div');
+      messageContainer.classList.add('chat-message', `${sender}-message`, 'flex');
+      messageContainer.classList.add(sender === 'user' ? 'justify-end' : 'justify-start');
+      
+      const bubbleDiv = document.createElement('div');
+      bubbleDiv.classList.add('message-bubble', 'p-3', 'rounded-lg', 'max-w-md', 'whitespace-pre-line');
+      
+      if (sender === 'user') {
+          bubbleDiv.classList.add('bg-[#13B782]', 'text-white', 'shadow-sm');
+      } else {
+          bubbleDiv.classList.add('bg-gray-200', 'text-gray-800');
+      }
 
-        const formattedText = text
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/^\* /gm, '&bull; ')
-            .replace(/\n/g, '<br>');
+      const formattedText = text
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/^\* /gm, '• ')
+          .replace(/\n/g, '<br>');
 
-        bubbleDiv.innerHTML = formattedText;
-        
-        messageContainer.appendChild(bubbleDiv);
-        chatHistory.appendChild(messageContainer);
-        chatHistory.scrollTop = chatHistory.scrollHeight;
-    }
+      bubbleDiv.innerHTML = formattedText;
+      messageContainer.appendChild(bubbleDiv);
+      chatHistory.appendChild(messageContainer);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+  }
 
-    async function askBot() {
-        const query = userInput.value.trim();
-        if (query === "") return;
+  async function askBot() {
+      const query = userInput.value.trim();
+      if (query === "") return;
 
-        addMessage('user', query);
-        userInput.value = "";
-        sendBtn.disabled = true;
-        
-        const thinkingMessage = document.createElement('div');
-        thinkingMessage.classList.add('chat-message', 'bot-message', 'thinking');
-        thinkingMessage.innerHTML = `<div class="message-bubble">Putri lagi mikir nih...</div>`;
-        chatHistory.appendChild(thinkingMessage);
-        chatHistory.scrollTop = chatHistory.scrollHeight;
+      addMessage('user', query);
+      userInput.value = "";
+      sendBtn.disabled = true;
 
-        try {
-            const response = await fetch('{{ url_for("chatbot.ask_putri") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({ query: query }),
-            });
+      const thinkingMessage = document.createElement('div');
+      thinkingMessage.classList.add('chat-message', 'bot-message', 'flex', 'justify-start');
+      thinkingMessage.innerHTML = `
+          <div class="message-bubble bg-gray-200 text-gray-600 p-3 rounded-lg max-w-md animate-pulse">
+              Putri lagi mikir nih...
+          </div>`;
+      chatHistory.appendChild(thinkingMessage);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
 
-            chatHistory.removeChild(thinkingMessage);
+      try {
+          const response = await fetch('{{ url_for("chatbot.ask_putri") }}', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ query: query }),
+          });
 
-            if (!response.ok) {
-                addMessage('bot', "Maaf, terjadi error saat menghubungi Putri.");
-                return;
-            }
+          chatHistory.removeChild(thinkingMessage);
 
-            const data = await response.json();
-            addMessage('bot', data.response);
+          if (!response.ok) {
+              addMessage('bot', "❌ Maaf, terjadi error saat menghubungi Putri.");
+              return;
+          }
 
-        } catch (error) {
-            chatHistory.removeChild(thinkingMessage);
-            addMessage('bot', "Koneksi ke Putri gagal. Coba periksa jaringan internetmu.");
-            console.error("Fetch error:", error);
-        } finally {
-            sendBtn.disabled = false;
-            userInput.focus();
-        }
-    }
+          const data = await response.json();
+          addMessage('bot', data.response);
 
-    sendBtn.addEventListener('click', askBot);
-    userInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            askBot();
-        }
-    });
+      } catch (error) {
+          chatHistory.removeChild(thinkingMessage);
+          addMessage('bot', "⚠️ Koneksi ke Putri gagal. Coba periksa jaringan internetmu.");
+          console.error("Fetch error:", error);
+      } finally {
+          sendBtn.disabled = false;
+          userInput.focus();
+      }
+  }
+
+  sendBtn.addEventListener('click', askBot);
+  userInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+          askBot();
+      }
+  });
 </script>
 {% endblock %}

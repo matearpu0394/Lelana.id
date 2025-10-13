@@ -4,36 +4,54 @@
 {% block page_title %}Manajemen Konten: Paket Wisata{% endblock %}
 
 {% block content %}
-<p><a href="{{ url_for('paket_wisata.tambah_paket') }}">Tambah Data Paket Wisata Baru</a></p>
+<div class="flex justify-between items-center mb-6">
+  <a href="{{ url_for('paket_wisata.tambah_paket') }}"
+     class="bg-primary hover:bg-primary/90 text-white font-semibold px-4 py-2 rounded-lg shadow-sm transition duration-200">
+    + Tambah Data Paket Wisata Baru
+  </a>
+</div>
 
-<table border="1" style="width:100%; border-collapse: collapse;">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nama Paket</th>
-            <th>Harga</th>
-            <th>Aksi</th>
-        </tr>
+<div class="overflow-x-auto bg-white rounded-xl shadow-sm animate-[fadeInUp_0.3s_ease-out]">
+  <table class="w-full border-collapse">
+    <thead class="bg-gray-100 border-b border-gray-200 text-sm text-gray-600 uppercase">
+      <tr>
+        <th class="py-3 px-4 text-left">ID</th>
+        <th class="py-3 px-4 text-left">Nama Paket</th>
+        <th class="py-3 px-4 text-left">Harga</th>
+        <th class="py-3 px-4 text-center">Aksi</th>
+      </tr>
     </thead>
-    <tbody>
-        {% for paket in daftar_paket %}
-        <tr>
-            <td>{{ paket.id }}</td>
-            <td>{{ paket.nama }}</td>
-            <td>Rp {{ "{:,.0f}".format(paket.harga).replace(",", ".") }}</td>
-            <td>
-                <a href="{{ url_for('paket_wisata.edit_paket', id=paket.id) }}">Edit</a> |
-                <form action="{{ url_for('paket_wisata.hapus_paket', id=paket.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus paket ini?');">
-                    {{ delete_form.hidden_tag() }}
-                    <input type="submit" value="Hapus" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer;">
-                </form>
-            </td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="4">Belum ada data paket wisata.</td>
-        </tr>
-        {% endfor %}
+    <tbody class="divide-y divide-gray-100 text-sm text-gray-700">
+      {% for paket in daftar_paket %}
+      <tr class="hover:bg-gray-50 transition">
+        <td class="py-3 px-4">{{ paket.id }}</td>
+        <td class="py-3 px-4 font-medium">{{ paket.nama }}</td>
+        <td class="py-3 px-4">Rp {{ "{:,.0f}".format(paket.harga).replace(",", ".") }}</td>
+        <td class="py-3 px-4 text-center space-x-2">
+          <a href="{{ url_for('paket_wisata.edit_paket', id=paket.id) }}"
+             class="text-primary hover:text-primary/80 font-medium transition duration-150">
+            Edit
+          </a>
+          |
+          <form action="{{ url_for('paket_wisata.hapus_paket', id=paket.id) }}" method="POST"
+                class="inline"
+                onsubmit="return confirm('Hapus paket ini?');">
+            {{ delete_form.hidden_tag() }}
+            <button type="submit"
+                    class="text-red-500 hover:text-red-600 font-medium transition duration-150">
+              Hapus
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4" class="py-6 px-4 text-center text-gray-500 italic">
+          Belum ada data paket wisata.
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
-</table>
+  </table>
+</div>
 {% endblock %}

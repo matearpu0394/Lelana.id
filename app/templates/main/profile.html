@@ -3,46 +3,79 @@
 {% block title %}Profil Saya - {{ user.username }}{% endblock %}
 
 {% block content %}
-<h2>Profil Saya</h2>
+<div class="max-w-4xl mx-auto py-8 animate-[fadeInUp_0.3s_ease-out]">
 
-<div>
-    <p><strong>Username:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Peran:</strong> {{ user.role }}</p>
-</div>
+  <!-- Judul halaman -->
+  <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-primary pb-2">
+    Profil Saya
+  </h2>
 
-<hr>
+  <!-- Informasi Profil -->
+  <div class="bg-white rounded-xl shadow-sm p-6 mb-10">
+    <div class="space-y-3 text-gray-700">
+      <p><strong>👤 Username:</strong> {{ user.username }}</p>
+      <p><strong>📧 Email:</strong> {{ user.email }}</p>
+      <p><strong>🎯 Peran:</strong>
+        <span class="px-2 py-1 rounded-md bg-primary/10 text-primary text-sm font-medium">
+          {{ user.role }}
+        </span>
+      </p>
+    </div>
+  </div>
 
-<h3>Riwayat Ulasan Petualang Saya</h3>
-{% if ulasan_list %}
-<ul>
-    {% for ulasan in ulasan_list %}
-    <li>
-        <p>
-            <strong>{{ ulasan.rating }}/5</strong> untuk 
-            <a href="{{ url_for('wisata.detail_wisata', id=ulasan.wisata_reviewed.id) }}">{{ ulasan.wisata_reviewed.nama }}</a>
-            <br>
-            <em>"{{ ulasan.komentar[:100] }}..."</em>
+  <!-- Riwayat Ulasan -->
+  <div class="mb-10">
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">
+      ⭐ Riwayat Ulasan Petualang Saya
+    </h3>
+
+    {% if ulasan_list %}
+    <ul class="space-y-4">
+      {% for ulasan in ulasan_list %}
+      <li class="bg-white rounded-lg shadow-sm p-4 border border-gray-100 hover:shadow-md transition">
+        <p class="text-gray-700">
+          <strong class="text-yellow-500">{{ ulasan.rating }}/5</strong> untuk
+          <a href="{{ url_for('wisata.detail_wisata', id=ulasan.wisata_reviewed.id) }}"
+             class="text-primary hover:underline font-medium">
+            {{ ulasan.wisata_reviewed.nama }}
+          </a>
         </p>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>Anda belum menulis ulasan apapun.</p>
-{% endif %}
+        <p class="text-gray-500 italic mt-1">"{{ ulasan.komentar[:100] }}..."</p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-500 italic">Anda belum menulis ulasan apapun.</p>
+    {% endif %}
+  </div>
 
-<hr>
+  <!-- Itinerari Pengguna -->
+  <div>
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">
+      🗺️ Itinerari Petualangan Saya
+    </h3>
 
-<h3>Itinerari Petualangan Saya</h3>
-{% if itinerari_list %}
-<ul>
-    {% for itinerari in itinerari_list %}
-    <li>
-        <a href="{{ url_for('itinerari.detail_itinerari', id=itinerari.id) }}">{{ itinerari.judul }}</a>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>Anda belum membuat Itinerari Petualangan. <a href="{{ url_for('itinerari.buat_itinerari') }}">Buat sekarang!</a></p>
-{% endif %}
+    {% if itinerari_list %}
+    <ul class="space-y-3">
+      {% for itinerari in itinerari_list %}
+      <li class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition border border-gray-100">
+        <a href="{{ url_for('itinerari.detail_itinerari', id=itinerari.id) }}"
+           class="text-primary hover:underline font-medium">
+          {{ itinerari.judul }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-500">
+      Anda belum membuat Itinerari Petualangan.
+      <a href="{{ url_for('itinerari.buat_itinerari') }}"
+         class="text-primary font-medium hover:underline">
+        Buat sekarang!
+      </a>
+    </p>
+    {% endif %}
+  </div>
+
+</div>
 {% endblock %}

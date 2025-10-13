@@ -3,25 +3,34 @@
 {% block title %}{{ event.nama }} - Lelana.id{% endblock %}
 
 {% block content %}
-<style>
-    .detail-container { border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-</style>
+<div class="max-w-3xl mx-auto bg-white border border-gray-200 rounded-xl shadow-sm p-8 mt-10">
+  <h2 class="text-3xl font-semibold text-gray-800 mb-4">{{ event.nama }}</h2>
 
-<div class="detail-container">
-    <h2>{{ event.nama }}</h2>
-    
-    <p><strong>Tanggal Pelaksanaan:</strong> {{ event.tanggal.strftime('%d %B %Y') }}</p>
-    <p><strong>Lokasi:</strong> {{ event.lokasi }}</p>
+  <div class="space-y-2 text-gray-700">
+    <p><strong class="text-gray-900">Tanggal Pelaksanaan:</strong> {{ event.tanggal.strftime('%d %B %Y') }}</p>
+    <p><strong class="text-gray-900">Lokasi:</strong> {{ event.lokasi }}</p>
     {% if event.penyelenggara %}
-    <p><strong>Penyelenggara:</strong> {{ event.penyelenggara }}</p>
+    <p><strong class="text-gray-900">Penyelenggara:</strong> {{ event.penyelenggara }}</p>
     {% endif %}
-    
-    <hr>
-    <p>{{ event.deskripsi|safe }}</p>
-    <hr>
-    
-    <small>Data dibuat pada: {{ event.tanggal_dibuat.strftime('%d %B %Y') }}</small>
+  </div>
+
+  <hr class="my-6 border-gray-200">
+
+  <div class="prose prose-gray max-w-none">
+    {{ event.deskripsi|safe }}
+  </div>
+
+  <hr class="my-6 border-gray-200">
+
+  <p class="text-sm text-gray-500">
+    Data dibuat pada: {{ event.tanggal_dibuat.strftime('%d %B %Y') }}
+  </p>
 </div>
 
-<p><a href="{{ url_for('event.list_event') }}">&laquo; Kembali ke Daftar Event</a></p>
+<div class="max-w-3xl mx-auto mt-6">
+  <a href="{{ url_for('event.list_event') }}"
+     class="inline-flex items-center text-primary font-medium hover:text-[#10a072] transition">
+     &laquo; Kembali ke Daftar Event
+  </a>
+</div>
 {% endblock %}
