@@ -3,9 +3,133 @@
 {% block title %}Selamat Datang di Lelana.id{% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
 <div>
     <h2>Selamat Datang di Lelana.id!</h2>
     <p>Platform untuk menemukan, merencanakan, dan berbagi cerita petualanganmu di Banyumas dan sekitarnya.</p>
+=======
+<div class="space-y-12 animate-[fadeInUp_0.4s_ease-out]">
+
+  <!-- Hero Section -->
+  <section class="text-center py-10">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-2">
+      Selamat Datang di <span class="text-primary">Lelana</span>.id
+    </h2>
+    <p class="text-gray-600 max-w-2xl mx-auto">
+      Platform untuk menemukan, merencanakan, dan berbagi cerita petualanganmu di Banyumas dan sekitarnya.
+    </p>
+  </section>
+
+  <!-- Destinasi Unggulan -->
+  <section>
+    <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-200">
+      Destinasi Unggulan Pilihan Komunitas
+    </h3>
+
+    {% if destinasi_list %}
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {% for wisata, review_count, avg_rating in destinasi_list %}
+      <div class="bg-white border border-gray-200 rounded-xl shadow-soft hover:shadow-md transition-all duration-300">
+        <div class="p-5">
+          <h4 class="text-lg font-medium text-gray-800 mb-2">
+            <a href="{{ url_for('wisata.detail_wisata', id=wisata.id) }}"
+               class="hover:text-primary transition">{{ wisata.nama }}</a>
+          </h4>
+
+          <p class="text-sm text-gray-600 mb-2">
+            {% if avg_rating %}
+              ⭐ <strong>{{ "%.1f"|format(avg_rating) }}/5.0</strong>
+              <span class="text-gray-500">(dari {{ review_count }} ulasan)</span>
+            {% else %}
+              <span class="italic text-gray-500">Belum ada ulasan</span>
+            {% endif %}
+          </p>
+
+          <p class="text-sm text-gray-700">{{ wisata.deskripsi[:150] }}...</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-500 italic">Belum ada destinasi wisata yang ditambahkan.</p>
+    {% endif %}
+  </section>
+
+  <!-- Event Mendatang -->
+  <section>
+    <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-200">
+      Event Mendatang
+    </h3>
+
+    {% if event_list %}
+    <ul class="space-y-3">
+      {% for event in event_list %}
+      <li class="bg-white border border-gray-200 rounded-lg shadow-soft hover:shadow-md transition-all duration-300 p-4">
+        <a href="{{ url_for('event.detail_event', id=event.id) }}"
+           class="font-medium text-primary hover:text-primary/80 transition">
+          {{ event.nama }}
+        </a>
+        <p class="text-sm text-gray-600 mt-1">
+          📅 {{ event.tanggal.strftime('%d %B %Y') }}
+        </p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-500 italic">Tidak ada event mendatang yang dijadwalkan.</p>
+    {% endif %}
+  </section>
+
+  <!-- Itinerari Terbaru -->
+  <section>
+    <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-200">
+      Itinerari Terbaru dari Komunitas
+    </h3>
+
+    {% if itinerari_list %}
+    <div class="grid gap-6 sm:grid-cols-2">
+      {% for itinerari in itinerari_list %}
+      <div class="bg-white border border-gray-200 rounded-xl shadow-soft hover:shadow-md transition duration-300 p-5">
+        <h4 class="text-lg font-medium text-gray-800 mb-1">
+          <a href="{{ url_for('itinerari.detail_itinerari', id=itinerari.id) }}"
+             class="hover:text-primary transition">{{ itinerari.judul }}</a>
+        </h4>
+        <p class="text-sm text-gray-600">✍️ Oleh: {{ itinerari.penulis.username }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-500 italic">Belum ada itinerari yang dibuat oleh komunitas.</p>
+    {% endif %}
+  </section>
+
+  <!-- Penawaran & Rekomendasi -->
+  <section>
+    <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-200">
+      ⭐ Penawaran & Rekomendasi Pilihan ⭐
+    </h3>
+
+    {% if paket_promosi_list %}
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {% for paket in paket_promosi_list %}
+      <div class="bg-gradient-to-br from-yellow-50 to-white border-2 border-yellow-400 rounded-xl shadow-soft hover:shadow-md transition duration-300 p-5">
+        <h4 class="text-lg font-medium text-gray-800 mb-2">
+          <a href="{{ url_for('paket_wisata.detail_paket', id=paket.id) }}"
+             class="hover:text-primary transition">{{ paket.nama }}</a>
+        </h4>
+        <p class="text-sm font-semibold text-primary mb-1">
+          💰 Rp {{ "{:,.0f}".format(paket.harga).replace(",", ".") }}
+        </p>
+        <p class="text-sm text-gray-700">{{ paket.deskripsi[:150] }}...</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-500 italic">Saat ini belum ada penawaran spesial.</p>
+    {% endif %}
+  </section>
+
+>>>>>>> 4e8e2ab (style: update layout and add tailwind class for html template files)
 </div>
 
 <hr>
